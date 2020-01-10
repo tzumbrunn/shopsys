@@ -1066,7 +1066,7 @@
         </phingcall>
     </target>
 
-    <target name="tests" depends="test-db-demo,test-elasticsearch-index-recreate,test-elasticsearch-export,tests-unit,tests-functional,tests-smoke" description="Runs unit, functional and smoke tests. Builds new test database in the process."/>
+    <target name="tests" depends="test-db-demo,assets,npm,grunt,test-error-pages-generate,test-elasticsearch-index-recreate,test-elasticsearch-export,tests-unit,tests-functional,tests-smoke" description="Runs unit, functional and smoke tests. Builds new test database in the process."/>
 
     <target name="tests-acceptance" depends="production-protection,clean,clean-redis,test-db-dump" description="Runs acceptance tests. Running Selenium server is required (Selenium is always running in Docker setup).">
         <available file="${path.env.test}" type="file" property="path.env.test.existed"/>
@@ -1103,6 +1103,14 @@
         <exec executable="${path.codeception.executable}" logoutput="true" passthru="true" checkreturn="true">
             <arg value="build"/>
             <arg value="--config=${path.codeception.configuration}"/>
+        </exec>
+    </target>
+
+    <target name="test-error-pages-generate" depends="redis-check" description="Generates error pages displayed in production environment.">
+        <exec executable="${path.php.executable}" passthru="true" checkreturn="true">
+            <arg value="${path.bin-console}"/>
+            <arg value="shopsys:error-page:generate-all"/>
+            <arg value="--env=test"/>
         </exec>
     </target>
 

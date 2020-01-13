@@ -395,6 +395,7 @@ There you can find links to upgrade notes for other versions too.
                 +   {% set address = user.customer.billingAddress %}
                 ```
         - method `Shopsys\FrameworkBundle\Model\Customer\UserFacade::createCustomerWithBillingAddress()` was extracted to new class `Shopsys\FrameworkBundle\Model\Customer\CustomerUserFacade`
+- update translations in `OrderCest` using [diff](https://github.com/shopsys/shopsys/pull/1582/files) [#1582](https://github.com/shopsys/shopsys/pull/1582)
 
 - add hover timeout to horizontal menu ([#1564](https://github.com/shopsys/shopsys/pull/1564))
     - you can skip this task if you have your custom design

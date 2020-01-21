@@ -38,6 +38,14 @@ There you can find links to upgrade notes for other versions too.
         -   RUN npm install -g npm@6.13.2
         ```
 
+- update your `docker/php-fpm/Dockerfile` to install newer version of Redis ([#1606](https://github.com/shopsys/shopsys/pull/1606))
+    ```diff
+        # install redis extension
+    -   RUN pecl install redis-4.1.1 && \
+    +   RUN pecl install redis-5.1.1 && \
+            docker-php-ext-enable redis
+    ```
+
 ### Application
 
 - update your twig files ([#1284](https://github.com/shopsys/shopsys/pull/1284/)):

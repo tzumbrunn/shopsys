@@ -125,11 +125,9 @@ A usage for example:
 ### JavaScript
 
 ```js
-import Translator from 'bazinga-translator';
+Shopsys.translator.trans('Please enter promo code.');
 
-Translator.trans('Please enter promo code.');
-
-Translator.transChoice('{1}Load next item|]1,Inf[Load next items', loadNextCount);
+Shopsys.translator.transChoice('{1}Load next item|]1,Inf[Load next items', loadNextCount);
 ```
 
 JavaScript translations are extracted and translated during compilation of JavaScript.

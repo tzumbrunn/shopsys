@@ -1,7 +1,6 @@
 # Frontend
 
 ## Getting started
-* [npm and webpack](./npm-and-webpack.md)
 * [Design implementation and Customization](./design-implementation-and-customization.md)
 * [Introduction to LESS](./introduction-to-less.md)
 * [Understanding the Style Directory](./understanding-the-style-directory.md)

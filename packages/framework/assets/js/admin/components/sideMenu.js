@@ -4,12 +4,19 @@ import Register from '../../common/utils/register';
 export default class SideMenu {
 
     constructor ($sideMenu) {
+        this.$elementPanelClass = '.js-web-panel';
+
         this.$sideMenu = $sideMenu;
         this.$items = this.$sideMenu.filterAllNodes('.js-side-menu-item');
 
         this.$items.click(function () {
-            $(this).filterAllNodes('.js-side-menu-submenu').show();
-            $(this).addClass('open');
+            if ($(this).hasClass('open')) {
+                $(this).parents(this.$elementPanelClass).removeClass('open');
+            } else {
+                $(this).parents(this.$elementPanelClass).addClass('open');
+            }
+            $(this).filterAllNodes('.js-side-menu-submenu').toggle();
+            $(this).toggleClass('open');
         });
 
         if (this.$sideMenu.hasClass('js-side-menu-close-after-mouseleave')) {
@@ -26,12 +33,13 @@ export default class SideMenu {
     }
 
     closeMenus () {
+        this.$sideMenu.removeClass('open');
         this.$items.filterAllNodes('.js-side-menu-submenu').hide();
         this.$items.removeClass('open');
     }
 
     static init ($container) {
-        $container.filterAllNodes('.js-side-menu').each(function () {
+        $container.filterAllNodes(this.$elementPanelClass).each(function () {
             // eslint-disable-next-line no-new
             new SideMenu($(this));
         });

@@ -47,15 +47,20 @@
                             attr: { class: 'js-checkbox-toggle', 'data-checkbox-toggle-container-id': 'js-delivery-address-fields' },
                             label: 'I want to deliver products to different address than the billing one'|trans})
                         }}
+
                         <div id="js-delivery-address-fields">
-                            {{ form_row(form.deliveryFirstName, { label: 'First name'|trans }) }}
-                            {{ form_row(form.deliveryLastName, { label: 'Last name'|trans }) }}
-                            {{ form_row(form.deliveryCompanyName, { label: 'Company'|trans }) }}
-                            {{ form_row(form.deliveryTelephone, { label: 'Telephone'|trans }) }}
-                            {{ form_row(form.deliveryStreet, { label: 'Street'|trans }) }}
-                            {{ form_row(form.deliveryCity, { label: 'City'|trans }) }}
-                            {{ form_row(form.deliveryPostcode, { label: 'Postcode'|trans }) }}
-                            {{ form_row(form.deliveryCountry, { label: 'Country'|trans }) }}
+                            {% if app.user is not null %}
+                                {{ form_row(form.deliveryAddress, { label: 'Pick delivery address'|trans, attr: { class: 'js-delivery-address-select' } }) }}
+                            {% endif %}
+
+                            {{ form_row(form.deliveryFirstName, { label: 'First name'|trans, attr: { class: 'js-delivery-address-firstName' } }) }}
+                            {{ form_row(form.deliveryLastName, { label: 'Last name'|trans, attr: { class: 'js-delivery-address-lastName' } }) }}
+                            {{ form_row(form.deliveryCompanyName, { label: 'Company'|trans, attr: { class: 'js-delivery-address-companyName' } }) }}
+                            {{ form_row(form.deliveryTelephone, { label: 'Telephone'|trans, attr: { class: 'js-delivery-address-telephone' } }) }}
+                            {{ form_row(form.deliveryStreet, { label: 'Street'|trans, attr: { class: 'js-delivery-address-street' } }) }}
+                            {{ form_row(form.deliveryCity, { label: 'City'|trans, attr: { class: 'js-delivery-address-city' } }) }}
+                            {{ form_row(form.deliveryPostcode, { label: 'Postcode'|trans, attr: { class: 'js-delivery-address-postcode' } }) }}
+                            {{ form_row(form.deliveryCountry, { label: 'Country'|trans, attr: { class: 'js-delivery-address-country' } }) }}
                         </div>
                     </fieldset>
 

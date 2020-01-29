@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Shopsys\FrameworkBundle\Model\Customer;
 
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 use Shopsys\FrameworkBundle\Model\Country\Country;
 
 /**
  * @ORM\Table(name="delivery_addresses")
  * @ORM\Entity
  */
-class DeliveryAddress
+class DeliveryAddress implements JsonSerializable
 {
     /**
      * @var int
@@ -195,5 +196,41 @@ class DeliveryAddress
     public function getCustomer(): Customer
     {
         return $this->customer;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFormLabel(): string
+    {
+        $address = [
+            $this->getFirstName(),
+            $this->getLastName(),
+            $this->getCompanyName(),
+            $this->getTelephone(),
+            $this->getStreet(),
+            $this->getCity(),
+            $this->getPostcode(),
+            $this->getCountry()->getName(),
+        ];
+
+        return implode(', ', array_filter($address));
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize(): array
+    {
+        return [
+            'firstName' => $this->getFirstName(),
+            'lastName' => $this->getLastName(),
+            'companyName' => $this->getCompanyName(),
+            'street' => $this->getStreet(),
+            'city' => $this->getCity(),
+            'postcode' => $this->getPostcode(),
+            'country' => $this->getCountry()->getId(),
+            'telephone' => $this->getTelephone(),
+        ];
     }
 }

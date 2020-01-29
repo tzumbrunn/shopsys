@@ -86,4 +86,12 @@ class Customer
 
         return null;
     }
+
+    /**
+     * @return \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddress[]
+     */
+    public function getDeliveryAddresses(): array
+    {
+        return $this->deliveryAddresses->toArray();
+    }
 }

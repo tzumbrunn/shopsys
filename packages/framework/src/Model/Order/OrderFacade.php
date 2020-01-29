@@ -8,6 +8,7 @@ use Shopsys\FrameworkBundle\Component\Setting\Setting;
 use Shopsys\FrameworkBundle\Form\Admin\QuickSearch\QuickSearchFormData;
 use Shopsys\FrameworkBundle\Model\Administrator\Security\AdministratorFrontSecurityFacade;
 use Shopsys\FrameworkBundle\Model\Cart\CartFacade;
+use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddress;
 use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserFacade;
@@ -293,9 +294,10 @@ class OrderFacade
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderData $orderData
+     * @param \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddress|null $deliveryAddress
      * @return \Shopsys\FrameworkBundle\Model\Order\Order
      */
-    public function createOrderFromFront(OrderData $orderData)
+    public function createOrderFromFront(OrderData $orderData, ?DeliveryAddress $deliveryAddress)
     {
         $orderData->status = $this->orderStatusRepository->getDefault();
         $orderPreview = $this->orderPreviewFactory->createForCurrentUser($orderData->transport, $orderData->payment);
@@ -306,8 +308,9 @@ class OrderFacade
 
         $this->cartFacade->deleteCartOfCurrentCustomerUser();
         $this->currentPromoCodeFacade->removeEnteredPromoCode();
+
         if ($customerUser instanceof CustomerUser) {
-            $this->customerUserFacade->amendCustomerUserDataFromOrder($customerUser, $order);
+            $this->customerUserFacade->amendCustomerUserDataFromOrder($customerUser, $order, $deliveryAddress);
         }
 
         return $order;

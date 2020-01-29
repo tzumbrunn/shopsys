@@ -7,6 +7,7 @@ use Shopsys\FrameworkBundle\Model\Customer\BillingAddressDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Customer\BillingAddressFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Customer\Customer;
 use Shopsys\FrameworkBundle\Model\Customer\CustomerFacade;
+use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddress;
 use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressFacade;
 use Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade;
 use Shopsys\FrameworkBundle\Model\Order\Order;
@@ -180,10 +181,10 @@ class CustomerUserFacade
     /**
      * @param int $customerUserId
      * @param \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateData $customerUserUpdateData
-     *
+     * @param \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddress|null $deliveryAddress
      * @return \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser
      */
-    protected function edit($customerUserId, CustomerUserUpdateData $customerUserUpdateData)
+    protected function edit($customerUserId, CustomerUserUpdateData $customerUserUpdateData, ?DeliveryAddress $deliveryAddress)
     {
         $customerUser = $this->getCustomerUserById($customerUserId);
 
@@ -195,15 +196,12 @@ class CustomerUserFacade
 
         $customerUser->getCustomer()->getBillingAddress()->edit($customerUserUpdateData->billingAddressData);
 
-        if ($customerUserUpdateData->deliveryAddressData && $customerUserUpdateData->deliveryAddressData->addressFilled) {
-            if ($customerUser->getCustomer()->getDeliveryAddress() === null) {
-                $customerUserUpdateData->deliveryAddressData->customer = $customerUser->getCustomer();
-                $this->deliveryAddressFacade->create($customerUserUpdateData->deliveryAddressData);
-            } else {
-                $this->deliveryAddressFacade->edit($customerUser->getCustomer()->getDeliveryAddress()->getId(), $customerUserUpdateData->deliveryAddressData);
-            }
-        } elseif ($customerUser->getCustomer()->getDeliveryAddress() !== null) {
-            $this->deliveryAddressFacade->delete($customerUser->getCustomer()->getDeliveryAddress()->getId());
+        if ($customerUserUpdateData->deliveryAddressData &&
+            $customerUserUpdateData->deliveryAddressData->addressFilled &&
+            $deliveryAddress === null
+        ) {
+            $customerUserUpdateData->deliveryAddressData->customer = $customerUser->getCustomer();
+            $this->deliveryAddressFacade->create($customerUserUpdateData->deliveryAddressData);
         }
 
         return $customerUser;
@@ -255,12 +253,14 @@ class CustomerUserFacade
     /**
      * @param \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser $customerUser
      * @param \Shopsys\FrameworkBundle\Model\Order\Order $order
+     * @param \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddress|null $deliveryAddress
      */
-    public function amendCustomerUserDataFromOrder(CustomerUser $customerUser, Order $order)
+    public function amendCustomerUserDataFromOrder(CustomerUser $customerUser, Order $order, ?DeliveryAddress $deliveryAddress)
     {
         $this->edit(
             $customerUser->getId(),
-            $this->customerUserUpdateDataFactory->createAmendedByOrder($customerUser, $order)
+            $this->customerUserUpdateDataFactory->createAmendedByOrder($customerUser, $order, $deliveryAddress),
+            $deliveryAddress
         );
 
         $this->em->flush();

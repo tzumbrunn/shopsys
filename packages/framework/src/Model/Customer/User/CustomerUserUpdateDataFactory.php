@@ -97,13 +97,12 @@ class CustomerUserUpdateDataFactory implements CustomerUserUpdateDataFactoryInte
     /**
      * @param \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser $customerUser
      * @param \Shopsys\FrameworkBundle\Model\Order\Order $order
-     *
+     * @param \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddress|null $deliveryAddress
      * @return \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateData
      */
-    public function createAmendedByOrder(CustomerUser $customerUser, Order $order): CustomerUserUpdateData
+    public function createAmendedByOrder(CustomerUser $customerUser, Order $order, ?DeliveryAddress $deliveryAddress): CustomerUserUpdateData
     {
         $billingAddress = $customerUser->getCustomer()->getBillingAddress();
-        $deliveryAddress = $customerUser->getCustomer()->getDeliveryAddress();
 
         $customerUserUpdateData = $this->createFromCustomerUser($customerUser);
 

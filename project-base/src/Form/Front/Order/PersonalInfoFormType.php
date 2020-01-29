@@ -187,6 +187,7 @@ class PersonalInfoFormType extends AbstractType
                         /** @var \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddress $choice */
                         return ['data-js-address' => json_encode($choice->jsonSerialize())];
                     },
+                    'attr' => ['data-js-address-disable-fields' => true],
                     'placeholder' => t('New delivery address'),
                 ]);
         }

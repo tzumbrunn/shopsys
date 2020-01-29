@@ -67,7 +67,7 @@ class CustomerUserUpdateDataFactoryTest extends TestCase
         $deliveryCountryData->names = ['cs' => 'Slovenská republika'];
         $deliveryCountry = new Country($deliveryCountryData);
         $deliveryAddressData = new DeliveryAddressData();
-        $deliveryAddressData->addressFilled = true;
+        $deliveryAddressData->addressFilled = false;
         $deliveryAddressData->street = 'deliveryStreet';
         $deliveryAddressData->city = 'deliveryCity';
         $deliveryAddressData->postcode = 'deliveryPostcode';
@@ -81,7 +81,7 @@ class CustomerUserUpdateDataFactoryTest extends TestCase
         $customer->addBillingAddress($this->createBillingAddress($billingAddressData));
         $customer->addDeliveryAddress($this->createDeliveryAddress($deliveryAddressData));
 
-        $deliveryAddress = new DeliveryAddress($deliveryAddressData);
+        $deliveryAddress = $this->createDeliveryAddress($deliveryAddressData);
 
         $customerUser = new CustomerUser($customerUserData);
 

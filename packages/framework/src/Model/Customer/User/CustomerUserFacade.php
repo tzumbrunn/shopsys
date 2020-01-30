@@ -226,7 +226,7 @@ class CustomerUserFacade
      *
      * @return \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser
      */
-    public function editByAdmin($customerUserId, CustomerUserUpdateData $customerUserUpdateData)
+    public function editByAdmin(int $customerUserId, CustomerUserUpdateData $customerUserUpdateData)
     {
         $customerUser = $this->edit($customerUserId, $customerUserUpdateData, null, false);
 

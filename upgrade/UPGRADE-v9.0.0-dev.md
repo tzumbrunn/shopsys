@@ -560,7 +560,6 @@ There you can find links to upgrade notes for other versions too.
               </div>
           </div>
         ```
-
 - add cart detail on hover ([#1565](https://github.com/shopsys/shopsys/pull/1565))
   
   - you can skip this task if you have your custom design
@@ -636,7 +635,78 @@ There you can find links to upgrade notes for other versions too.
                {{ 'Search [verb]'|trans }}
            </button>
         ```
- 
+- update your application to support multiple delivery addresses ([#1635](https://github.com/shopsys/shopsys/pull/1635))
+    - some methods has changed so you might want to update their usage in your application:
+        - `Customer::getDeliveryAddress has been removed` you can use `Customer::getDeliveryAddresses` or `Customer::getLastCreatedDeliveryAddress` instead
+        - `CustomerUserFacade::edit()` 
+            ```diff
+              -   protected function edit($customerUserId, CustomerUserUpdateData $customerUserUpdateData);
+              +   protected function edit(int $customerUserId, CustomerUserUpdateData $customerUserUpdateData, ?DeliveryAddress $deliveryAddress, bool $updateExistingDeliveryAddress);  
+            ```
+        - `CustomerUserFacade::editByAdmin()` 
+            ```diff
+              -   public function editByAdmin($customerUserId, CustomerUserUpdateData $customerUserUpdateData);
+              +   public function editByAdmin(int $customerUserId, CustomerUserUpdateData $customerUserUpdateData);  
+            ```
+        - `CustomerUserFacade::editByCustomerUser()` 
+            ```diff
+              -   public function editByAdmin($customerUserId, CustomerUserUpdateData $customerUserUpdateData);
+              +   public function editByCustomerUser(int $customerUserId, CustomerUserUpdateData $customerUserUpdateData, ?DeliveryAddress $deliveryAddress) 
+            ```
+        - `CustomerUserFacade::amendCustomerUserDataFromOrder()` 
+            ```diff
+              -   public function amendCustomerUserDataFromOrder(CustomerUser $customerUser, Order $order)
+              +   public function amendCustomerUserDataFromOrder(CustomerUser $customerUser, Order $order, ?DeliveryAddress $deliveryAddress) 
+            ```
+        - `CustomerUserUpdateDataFactory::createAmendedByOrder()` and `CustomerUserUpdateDataFactoryInterface::createAmendedByOrder()`
+            ```diff
+              -   public function createAmendedByOrder(CustomerUser $customerUser, Order $order): CustomerUserUpdateData
+              +   public function createAmendedByOrder(CustomerUser $customerUser, Order $order, ?DeliveryAddress $deliveryAddress): CustomerUserUpdateData
+            ```
+        - `OrderFacade::createOrderFromFront()`
+            ```diff
+              -   public function createOrderFromFront(OrderData $orderData)
+              +   public function createOrderFromFront(OrderData $orderData, ?DeliveryAddress $deliveryAddress)
+            ```
+    - there has been changes in project files, that you should apply in your project:
+        - update your `assets/js/frontend.js` file
+            ```diff
+                // HP entry?
+                import './frontend/homepage/slickInit';
+            +   
+            +   import './frontend/deliveryAddress';
+            ```
+        - add [assets/js/frontend/deliveryAddress/deliveryAddress.js](https://github.com/shopsys/shopsys/tree/master/project-base/assets/js/frontend/deliveryAddress/deliveryAddress.js) and [assets/js/frontend/deliveryAddress/index.js]((https://github.com/shopsys/shopsys/tree/master/project-base/assets/js/frontend/deliveryAddress/deliveryAddress.js)) files
+        - update your `config/packages/twig.yaml`
+            ```diff
+                - '@ShopsysFramework/Admin/Form/productCalculatedPrices.html.twig'
+            +   - '@ShopsysFramework/Admin/Form/deliveryAddressListFields.html.twig'
+            ```
+        - update your `config/routes/shopsys_front.yml` - add to end of file
+            ```diff
+            +   front_customer_delivery_address_delete:
+            +       path: /customer/delete-delivery-address/{deliveryAddressId}
+            +       defaults:
+            +           _controller: App\Controller\Front\CustomerController:deleteDeliveryAddressAction
+            +           deliveryAddressId: 0
+            +       methods: [GET]
+            +       requirements:
+            +           deliveryAddressId: \d+
+            ```
+        - update these files from [pull request diff](https://github.com/shopsys/shopsys/pull/1635/files)
+            - `src/Controller/Front/CustomerController.php`
+            - `src/Controller/Front/OrderController.php`
+            - `src/Form/Front/Customer/DeliveryAddressFormType.php`
+            - `src/Form/Front/Order/PersonalInfoFormType.php`
+            - `templates/Front/Content/Customer/edit.html.twig`
+            - `templates/Front/Content/Order/step3.html.twig`
+            - `templates/Front/Content/PersonalData/adress.xml.twig`
+            - `templates/Front/Content/PersonalData/detail.html.twig`
+            - `templates/Front/Content/PersonalData/export.xml.twig`
+            - `templates/Front/Content/PersonalData/order.html.twig`
+            - `templates/Front/Form/theme.html.twig`
+            - `tests/App/Unit/Form/Front/Order/PersonalInfoFormTypeTest.php`
+
 ### Tools
 
 - apply coding standards checks on your `app` folder ([#1306](https://github.com/shopsys/shopsys/pull/1306))

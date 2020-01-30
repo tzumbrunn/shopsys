@@ -87,8 +87,8 @@ class CustomerUserUpdateDataFactory implements CustomerUserUpdateDataFactoryInte
      */
     protected function getDeliveryAddressDataFromCustomer(Customer $customer): DeliveryAddressData
     {
-        if ($customer->getDeliveryAddress()) {
-            return $this->deliveryAddressDataFactory->createFromDeliveryAddress($customer->getDeliveryAddress());
+        if ($customer->getLastCreatedDeliveryAddress() !== null) {
+            return $this->deliveryAddressDataFactory->createFromDeliveryAddress($customer->getLastCreatedDeliveryAddress());
         }
 
         return $this->deliveryAddressDataFactory->create();

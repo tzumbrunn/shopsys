@@ -78,10 +78,10 @@ class Customer
     /**
      * @return \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddress|null
      */
-    public function getDeliveryAddress(): ?DeliveryAddress
+    public function getLastCreatedDeliveryAddress(): ?DeliveryAddress
     {
         if (count($this->deliveryAddresses) > 0) {
-            return $this->deliveryAddresses->first();
+            return $this->deliveryAddresses->last();
         }
 
         return null;

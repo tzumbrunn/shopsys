@@ -3,7 +3,7 @@
     {% import '@ShopsysFramework/Admin/Content/Order/orderItem.html.twig' as orderItemMacro %}
     <div class="wrap-divider">
         <h2>{{ 'Order items'|trans }}</h2>
-        <fieldset>
+        <div class="form-line form-line--no-padd">
             <div class="table-touch-always">
                 {{ form_errors(form.itemsWithoutTransportAndPayment) }}
                 <div class="table-touch-always__in">
@@ -78,6 +78,6 @@
                     </table>
                 </div>
             </div>
-        </fieldset>
+        </div>
     </div>
 {% endblock order_items_widget %}

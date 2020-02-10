@@ -2,27 +2,20 @@ import Register from 'framework/common/utils/register';
 import Ajax from 'framework/common/utils/ajax';
 import Window from '../utils/window';
 import Translator from 'bazinga-translator';
+import CheckboxToggle from 'framework/common/components/checkboxToggle';
 
 export default class DeliveryAddress {
-    onDeliveryAddressChange ($this, deliveryAddress, $deliveryAddressRemove) {
-
-        $this = $($this);
-        const $option = $this.children('option:selected');
+    onEdit ($editButton, deliveryAddress, $deliveryAddressRemove, $addressContainer) {
         const inputNames = deliveryAddress.getFormInputNames();
+        const $address = $editButton.data('js-address');
 
-        if (parseInt($option.val()) > 0) {
-            const $address = $option.data('js-address');
-
-            for (const key in inputNames) {
-                deliveryAddress.setValue('.js-delivery-address-' + inputNames[key], $address[inputNames[key]]);
-            }
-        } else {
-            for (const key in inputNames) {
-                deliveryAddress.setEmptyValue('.js-delivery-address-' + inputNames[key]);
-            }
+        for (const key in inputNames) {
+            deliveryAddress.setValue('.js-delivery-address-' + inputNames[key], $address[inputNames[key]]);
         }
 
-        deliveryAddress.updateForm($this, deliveryAddress, $deliveryAddressRemove);
+        deliveryAddress.updateForm($editButton, deliveryAddress, $deliveryAddressRemove);
+        $addressContainer.show();
+        console.log($addressContainer);
     }
 
     setValue (selector, value) {
@@ -61,7 +54,7 @@ export default class DeliveryAddress {
         }
     }
 
-    updateForm ($select, deliveryAddress, $deliveryAddressRemove) {
+    updateForm ($select, deliveryAddress) {
         const disableFields = $select.data('js-address-disable-fields');
         if (disableFields) {
             const inputNames = deliveryAddress.getFormInputNames();
@@ -76,16 +69,9 @@ export default class DeliveryAddress {
                 }
             }
         }
-
-        if ($select.val() == '') {
-            $deliveryAddressRemove.hide();
-        } else {
-            $deliveryAddressRemove.show();
-        }
     }
 
     onRemove ($this, deliveryAddress, $deliveryAddressSelect) {
-        $this = $($this);
         const deliveryAddressId = $deliveryAddressSelect.val();
         if (deliveryAddressId > 0) {
             const url = $this.data('href') + '/' + deliveryAddressId;
@@ -122,15 +108,51 @@ export default class DeliveryAddress {
         return ['firstName', 'lastName', 'companyName', 'telephone', 'street', 'city', 'postcode', 'country'];
     }
 
+    isAddressEmpty (deliveryAddress) {
+        const inputNames = deliveryAddress.getFormInputNames();
+        let isAddressEmpty = true;
+
+        for (const key in inputNames) {
+            if (inputNames[key] == 'country') {
+                continue;
+            }
+
+            if ($('.js-delivery-address-' + inputNames[key]).val() != '') {
+                isAddressEmpty = false;
+            }
+        }
+
+        return isAddressEmpty;
+    }
+
+    onChange ($input, deliveryAddress, $addressContainer) {
+        const inputNames = deliveryAddress.getFormInputNames();
+
+        if ($input.val() != '') {
+            if (deliveryAddress.isAddressEmpty(deliveryAddress)) {
+                $addressContainer.hide();
+            }
+        } else {
+            for (const key in inputNames) {
+                deliveryAddress.setEmptyValue('.js-delivery-address-' + inputNames[key]);
+            }
+
+            $addressContainer.show();
+        }
+    }
+
     static init ($container) {
-        const $deliveryAddressSelect = $container.filterAllNodes('.js-delivery-address-select');
+        const $deliveryAddressEdit = $container.filterAllNodes('.js-delivery-address-edit-button');
         const $deliveryAddressRemove = $container.filterAllNodes('.js-delivery-address-remove-button');
+        const $deliveryAddressInput = $container.filterAllNodes('.js-delivery-address-input');
+        const $addressContainer = (new CheckboxToggle($container)).findContainer($('.js-delivery-address-toggle'));
         const deliveryAddress = new DeliveryAddress();
 
-        $deliveryAddressSelect.change((event) => deliveryAddress.onDeliveryAddressChange(event.currentTarget, deliveryAddress, $deliveryAddressRemove));
-        $deliveryAddressRemove.click((event) => deliveryAddress.onRemove(event.currentTarget, deliveryAddress, $deliveryAddressSelect));
+        $deliveryAddressEdit.click((event) => deliveryAddress.onEdit($(event.currentTarget), deliveryAddress, $deliveryAddressRemove, $addressContainer));
+        $deliveryAddressRemove.click((event) => deliveryAddress.onRemove($(event.currentTarget), deliveryAddress, $deliveryAddressEdit));
+        $deliveryAddressInput.change((event) => deliveryAddress.onChange($(event.currentTarget), deliveryAddress, $addressContainer));
 
-        deliveryAddress.updateForm($deliveryAddressSelect, deliveryAddress, $deliveryAddressRemove);
+        deliveryAddress.updateForm($deliveryAddressEdit, deliveryAddress);
     }
 }
 

@@ -75,22 +75,19 @@
                 </div>
 
                 <div id="{{ form.deliveryAddressData.vars.id }}" class="wrap-box">
-                    <h2 class="wrap-box__title">{{ 'Shipping address'|trans }}</h2>
+                    <h2 class="wrap-box__title">{{ 'Shipping addresses'|trans }}</h2>
                     <div class="wrap-box__in">
+
+                        {{ form_row(form.deliveryAddressData.deliveryAddress, { label: null }) }}
                         {{ form_row(form.deliveryAddressData.addressFilled, {
-                            attr: { class: 'js-checkbox-toggle', 'data-checkbox-toggle-container-id': 'js-delivery-address-fields' },
-                            label: 'I want to edit delivery address'|trans})
+                            attr: { class: 'js-checkbox-toggle js-delivery-address-toggle', 'data-checkbox-toggle-container-id': 'js-delivery-address-fields' },
+                            label: 'New delivery address'|trans})
                         }}
 
                         <div id="js-delivery-address-fields">
-                            {{ form_row(form.deliveryAddressData.deliveryAddress, { label: 'Pick delivery address'|trans, attr: { class: 'js-delivery-address-select' } }) }}
-
-                            <a data-href="{{ url('front_customer_delivery_address_delete') }}" class="js-delivery-address-remove-button">
-                                <i class="svg svg-remove"></i>
-                            </a>
-                            {{ form_row(form.deliveryAddressData.companyName, { label: 'Company'|trans, attr: { class: 'js-delivery-address-company-name' } }) }}
-                            {{ form_row(form.deliveryAddressData.firstName, { label: 'First name'|trans, attr: { class: 'js-delivery-address-first-name' } }) }}
-                            {{ form_row(form.deliveryAddressData.lastName, { label: 'Last name'|trans, attr: { class: 'js-delivery-address-last-name' } }) }}
+                            {{ form_row(form.deliveryAddressData.companyName, { label: 'Company'|trans, attr: { class: 'js-delivery-address-companyName' } }) }}
+                            {{ form_row(form.deliveryAddressData.firstName, { label: 'First name'|trans, attr: { class: 'js-delivery-address-firstName' } }) }}
+                            {{ form_row(form.deliveryAddressData.lastName, { label: 'Last name'|trans, attr: { class: 'js-delivery-address-lastName' } }) }}
                             {{ form_row(form.deliveryAddressData.telephone, { label: 'Telephone'|trans, attr: { class: 'js-delivery-address-telephone' } }) }}
                             {{ form_row(form.deliveryAddressData.street, { label: 'Street'|trans, attr: { class: 'js-delivery-address-street' } }) }}
                             {{ form_row(form.deliveryAddressData.city, { label: 'City'|trans, attr: { class: 'js-delivery-address-city' } }) }}

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Form\Front\Customer;
 
 use Shopsys\FrameworkBundle\Form\Constraints\DeliveryAddressOfCurrentCustomer;
+use Shopsys\FrameworkBundle\Form\DeliveryAddressChoiceType;
 use Shopsys\FrameworkBundle\Form\ValidationGroup;
 use Shopsys\FrameworkBundle\Model\Country\CountryFacade;
 use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressData;
@@ -59,21 +60,11 @@ class DeliveryAddressFormType extends AbstractType
                     'data-checkbox-toggle-container-class' => 'js-delivery-address-fields',
                 ],
             ])
-            ->add('deliveryAddress', ChoiceType::class, [
-                'required' => false,
+            ->add('deliveryAddress', DeliveryAddressChoiceType::class, [
                 'constraints' => [
                     new DeliveryAddressOfCurrentCustomer(),
                 ],
-                'choices' => $this->currentCustomerUser->findCurrentCustomerUser()->getCustomer()->getDeliveryAddresses(),
-                'choice_label' => 'formLabel',
-                'choice_value' => 'id',
-                'choice_attr' => function ($choice) {
-                    /** @var \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddress $choice */
-                    return ['data-js-address' => json_encode($choice->jsonSerialize())];
-                },
-                'placeholder' => t('New delivery address'),
                 'mapped' => false,
-                'attr' => ['data-js-address-disable-fields' => false],
             ])
             ->add('companyName', TextType::class, [
                 'required' => false,

@@ -202,6 +202,8 @@ class CustomerUserFacade
             $this->customerUserPasswordFacade->changePassword($customerUser, $customerUserUpdateData->customerUserData->password);
         }
 
+        ## todo - save delivery address picked
+
         $customerUser->getCustomer()->getBillingAddress()->edit($customerUserUpdateData->billingAddressData);
 
         if ($customerUserUpdateData->deliveryAddressData &&

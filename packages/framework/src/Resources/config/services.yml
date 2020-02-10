@@ -997,6 +997,8 @@ services:
 
     Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductIndex: ~
 
+    Shopsys\FrameworkBundle\Model\Category\Elasticsearch\CategoryIndex: ~
+
     Shopsys\FrameworkBundle\Component\Elasticsearch\IndexRegistry:
         arguments:
             $indexes: !tagged elasticsearch.index

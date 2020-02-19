@@ -109,7 +109,7 @@
 
     <target name="build" depends="build-deploy-part-1-db-independent,build-deploy-part-2-db-dependent" description="Builds application for production preserving your DB."/>
 
-    <target name="build-demo" depends="production-protection,wipe,build-version-generate,composer-prod,redis-check,dirs-create,assets,npm,db-demo,grunt,error-pages-generate,warmup,elasticsearch-index-recreate,elasticsearch-export,clean-redis-old" description="Builds application for production with clean demo DB."/>
+    <target name="build-demo" depends="production-protection,wipe,build-version-generate,composer-prod,redis-check,dirs-create,assets,npm,db-demo,elasticsearch-index-recreate,elasticsearch-export,grunt,error-pages-generate,warmup,clean-redis-old" description="Builds application for production with clean demo DB."/>
 
     <target name="build-demo-ci" depends="production-protection,build-version-generate,wipe-excluding-logs,composer-dev,timezones-check,dirs-create,test-dirs-create,assets,npm,db-demo,elasticsearch-index-recreate,elasticsearch-export,grunt,error-pages-generate,tests-acceptance-build,clean-redis-old,checks-ci" description="Builds application for development with clean demo DB and runs CI checks."/>
 

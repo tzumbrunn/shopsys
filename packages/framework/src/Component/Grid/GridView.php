@@ -6,7 +6,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Twig_Environment;
+use Twig\Environment;
 
 class GridView
 {
@@ -41,7 +41,7 @@ class GridView
     protected $router;
 
     /**
-     * @var \Twig_Environment
+     * @var \Twig\Environment
      */
     protected $twig;
 
@@ -49,7 +49,7 @@ class GridView
      * @param \Shopsys\FrameworkBundle\Component\Grid\Grid $grid
      * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
      * @param \Symfony\Component\Routing\RouterInterface $router
-     * @param \Twig_Environment $twig
+     * @param \Twig\Environment $twig
      * @param string|string[] $theme
      * @param array $templateParameters
      */
@@ -57,7 +57,7 @@ class GridView
         Grid $grid,
         RequestStack $requestStack,
         RouterInterface $router,
-        Twig_Environment $twig,
+        Environment $twig,
         $theme,
         array $templateParameters = []
     ) {

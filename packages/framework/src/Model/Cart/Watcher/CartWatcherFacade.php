@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessage;
 use Shopsys\FrameworkBundle\Model\Cart\Cart;
 use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Twig\Environment;
 
 class CartWatcherFacade
@@ -27,9 +27,9 @@ class CartWatcherFacade
     protected $currentCustomerUser;
 
     /**
-     * @var \Symfony\Component\HttpFoundation\Session\SessionInterface
+     * @var \Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface
      */
-    protected $session;
+    protected $flashBagInterface;
 
     /**
      * @var \Twig\Environment
@@ -37,20 +37,20 @@ class CartWatcherFacade
     protected $twigEnvironment;
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Session\SessionInterface $session
+     * @param \Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface $flashBagInterface
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcher $cartWatcher
      * @param \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser
      * @param \Twig\Environment $twigEnvironment
      */
     public function __construct(
-        SessionInterface $session,
+        FlashBagInterface $flashBagInterface,
         EntityManagerInterface $em,
         CartWatcher $cartWatcher,
         CurrentCustomerUser $currentCustomerUser,
         Environment $twigEnvironment
     ) {
-        $this->session = $session;
+        $this->flashBagInterface = $flashBagInterface;
         $this->em = $em;
         $this->cartWatcher = $cartWatcher;
         $this->currentCustomerUser = $currentCustomerUser;
@@ -72,14 +72,13 @@ class CartWatcherFacade
     protected function checkModifiedPrices(Cart $cart)
     {
         $modifiedItems = $this->cartWatcher->getModifiedPriceItemsAndUpdatePrices($cart);
-        $flashBag = $this->session->getFlashBag();
 
         $messageTemplate = $this->twigEnvironment->createTemplate(
             t('The price of the product <strong>{{ name }}</strong> you have in cart has changed. Please, check your order.')
         );
 
         foreach ($modifiedItems as $cartItem) {
-            $flashBag->add(FlashMessage::KEY_INFO, $messageTemplate->render(['name' => $cartItem->getName()]));
+            $this->flashBagInterface->add(FlashMessage::KEY_INFO, $messageTemplate->render(['name' => $cartItem->getName()]));
         }
 
         if (count($modifiedItems) > 0) {
@@ -93,7 +92,6 @@ class CartWatcherFacade
     protected function checkNotListableItems(Cart $cart)
     {
         $notVisibleItems = $this->cartWatcher->getNotListableItems($cart, $this->currentCustomerUser);
-        $flashBag = $this->session->getFlashBag();
 
         $toFlush = [];
 
@@ -104,9 +102,9 @@ class CartWatcherFacade
         foreach ($notVisibleItems as $cartItem) {
             try {
                 $productName = $cartItem->getName();
-                $flashBag->add(FlashMessage::KEY_ERROR, $messageTemplate->render(['name' => $productName]));
+                $this->flashBagInterface->add(FlashMessage::KEY_ERROR, $messageTemplate->render(['name' => $productName]));
             } catch (\Shopsys\FrameworkBundle\Model\Product\Exception\ProductNotFoundException $e) {
-                $this->add(
+                $this->flashBagInterface->add(
                     FlashMessage::KEY_ERROR,
                     t('Product you had in cart is no longer in available. Please check your order.')
                 );

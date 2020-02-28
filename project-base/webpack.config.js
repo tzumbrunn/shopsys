@@ -4,6 +4,8 @@ const processTrans = require('./assets/js/commands/translations/process');
 const CopyPlugin = require('copy-webpack-plugin');
 const path = require('path');
 
+const StylelintPlugin = require('stylelint-webpack-plugin');
+
 if (!Encore.isRuntimeEnvironmentConfigured()) {
     Encore.configureRuntimeEnvironment(process.env.NODE_ENV || 'dev');
 }
@@ -51,6 +53,21 @@ Encore
     ]))
 ;
 
+
+// Frontend Config
+Encore
+    .addEntry('frontend-style', './src/Resources/styles/front/common/main.less')
+    .addEntry('frontend-print-style', './src/Resources/styles/front/common/print/main.less')
+    .addPlugin (
+        new StylelintPlugin({
+            configFile: '.stylelintrc',
+            files: 'src/**/*.less'
+        })
+    )
+    .enableLessLoader()
+    .enablePostCssLoader()
+;
+
 const config = Encore.getWebpackConfig();
 
 config.resolve.alias = {
@@ -58,5 +75,4 @@ config.resolve.alias = {
     'framework': '@shopsys/framework/js',
     'jquery': path.resolve(path.join(__dirname, 'node_modules', 'jquery'))
 };
-
 module.exports = config;

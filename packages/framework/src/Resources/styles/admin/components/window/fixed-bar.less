@@ -46,7 +46,6 @@
         .window-fixed-bar--top & {
             width: 100%;
             max-width: 100%;
-            height: @height-fixed-bar;
         }
     }
 
@@ -59,7 +58,10 @@
         align-items: center;
 
         .window-fixed-bar--top & {
-            height: @height-fixed-bar;
+            @media @query-md {
+                height: @height-fixed-bar;
+                min-height: @height-fixed-bar;
+            }
         }
 
         &:first-child {

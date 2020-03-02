@@ -66,7 +66,8 @@ class QueryBuilderExtenderTest extends TestCase
                 Category::class,
                 $expectedJoinedEntity
             ),
-            $dql);
+            $dql
+        );
     }
 
     /**

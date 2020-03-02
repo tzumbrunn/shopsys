@@ -17,9 +17,9 @@ use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
 class Product extends BaseProduct
 {
     /**
-     * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
+     * @param \Tests\FrameworkBundle\Unit\Component\Doctrine\__fixtures\ProductData $productData
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface $productCategoryDomainFactory
-     * @param \Shopsys\ShopBundle\Model\Product\Product[]|null $variants
+     * @param \Tests\FrameworkBundle\Unit\Component\Doctrine\__fixtures\Product[]|null $variants
      */
     protected function __construct(BaseProductData $productData, ProductCategoryDomainFactoryInterface $productCategoryDomainFactory, array $variants = null)
     {
@@ -28,7 +28,7 @@ class Product extends BaseProduct
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface $productCategoryDomainFactory
-     * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
+     * @param \Tests\FrameworkBundle\Unit\Component\Doctrine\__fixtures\ProductData $productData
      * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationScheduler $productPriceRecalculationScheduler
      */
     public function edit(

@@ -43,17 +43,17 @@ trait FlashMessageTrait
     }
 
     /**
-     * @param mixed $message
+     * @param string $message
      */
-    public function addInfoFlash($message): void
+    public function addInfoFlash(string $message): void
     {
         $this->addFlashMessage(FlashMessage::KEY_INFO, $message);
     }
 
     /**
-     * @param mixed $message
+     * @param string $message
      */
-    public function addSuccessFlash($message): void
+    public function addSuccessFlash(string $message): void
     {
         $this->addFlashMessage(FlashMessage::KEY_SUCCESS, $message);
     }

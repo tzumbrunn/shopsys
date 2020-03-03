@@ -29,7 +29,7 @@ class CartWatcherFacade
     /**
      * @var \Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface
      */
-    protected $flashBagInterface;
+    protected $flashBag;
 
     /**
      * @var \Twig\Environment
@@ -37,20 +37,20 @@ class CartWatcherFacade
     protected $twigEnvironment;
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface $flashBagInterface
+     * @param \Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface $flashBag
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcher $cartWatcher
      * @param \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser
      * @param \Twig\Environment $twigEnvironment
      */
     public function __construct(
-        FlashBagInterface $flashBagInterface,
+        FlashBagInterface $flashBag,
         EntityManagerInterface $em,
         CartWatcher $cartWatcher,
         CurrentCustomerUser $currentCustomerUser,
         Environment $twigEnvironment
     ) {
-        $this->flashBagInterface = $flashBagInterface;
+        $this->flashBag = $flashBag;
         $this->em = $em;
         $this->cartWatcher = $cartWatcher;
         $this->currentCustomerUser = $currentCustomerUser;
@@ -78,7 +78,7 @@ class CartWatcherFacade
         );
 
         foreach ($modifiedItems as $cartItem) {
-            $this->flashBagInterface->add(FlashMessage::KEY_INFO, $messageTemplate->render(['name' => $cartItem->getName()]));
+            $this->flashBag->add(FlashMessage::KEY_INFO, $messageTemplate->render(['name' => $cartItem->getName()]));
         }
 
         if (count($modifiedItems) > 0) {
@@ -102,9 +102,9 @@ class CartWatcherFacade
         foreach ($notVisibleItems as $cartItem) {
             try {
                 $productName = $cartItem->getName();
-                $this->flashBagInterface->add(FlashMessage::KEY_ERROR, $messageTemplate->render(['name' => $productName]));
+                $this->flashBag->add(FlashMessage::KEY_ERROR, $messageTemplate->render(['name' => $productName]));
             } catch (\Shopsys\FrameworkBundle\Model\Product\Exception\ProductNotFoundException $e) {
-                $this->flashBagInterface->add(
+                $this->flashBag->add(
                     FlashMessage::KEY_ERROR,
                     t('Product you had in cart is no longer in available. Please check your order.')
                 );

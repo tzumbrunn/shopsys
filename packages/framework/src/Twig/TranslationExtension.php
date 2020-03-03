@@ -60,7 +60,7 @@ class TranslationExtension extends AbstractExtension
      * Helpful for protection from XSS when providing user input as translation argument
      * @see \Symfony\Bridge\Twig\Extension\TranslationExtension::transchoice()
      *
-     * @param \Twig_Environment $twig
+     * @param \Twig\Environment $twig
      * @param string $message
      * @param int $count
      * @param array $arguments

@@ -21,7 +21,7 @@ class GridView
     protected $templateParameters;
 
     /**
-     * @var \Twig_TemplateWrapper[]
+     * @var \Twig\TemplateWrapper[]
      */
     protected $templates;
 
@@ -244,7 +244,7 @@ class GridView
     }
 
     /**
-     * @return \Twig_TemplateWrapper[]
+     * @return \Twig\TemplateWrapper[]
      */
     protected function getTemplates()
     {
@@ -264,7 +264,7 @@ class GridView
 
     /**
      * @param string $theme
-     * @return \Twig_TemplateWrapper
+     * @return \Twig\TemplateWrapper
      */
     protected function getTemplateFromString($theme)
     {

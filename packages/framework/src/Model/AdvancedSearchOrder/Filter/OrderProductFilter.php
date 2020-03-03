@@ -74,11 +74,10 @@ class OrderProductFilter implements AdvancedSearchFilterInterface
      */
     protected function getContainsDqlOperator($operator)
     {
-        switch ($operator) {
-            case self::OPERATOR_CONTAINS:
-                return 'EXISTS';
-            case self::OPERATOR_NOT_CONTAINS:
-                return 'NOT EXISTS';
+        if ($operator === self::OPERATOR_CONTAINS) {
+            return 'EXISTS';
+        } else {
+            return 'NOT EXISTS';
         }
     }
 }

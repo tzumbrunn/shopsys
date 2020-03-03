@@ -85,11 +85,10 @@ class OrderStatusFilter implements AdvancedSearchFilterInterface
      */
     protected function getContainsDqlOperator($operator)
     {
-        switch ($operator) {
-            case self::OPERATOR_IS:
-                return '=';
-            case self::OPERATOR_IS_NOT:
-                return '!=';
+        if ($operator === self::OPERATOR_IS) {
+            return '=';
+        } else {
+            return '!=';
         }
     }
 }

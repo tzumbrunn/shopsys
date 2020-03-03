@@ -73,11 +73,10 @@ class OrderNumberFilter implements AdvancedSearchFilterInterface
      */
     protected function getContainsDqlOperator($operator)
     {
-        switch ($operator) {
-            case self::OPERATOR_CONTAINS:
-                return 'LIKE';
-            case self::OPERATOR_NOT_CONTAINS:
-                return 'NOT LIKE';
+        if ($operator === self::OPERATOR_CONTAINS) {
+            return 'LIKE';
+        } else {
+            return 'NOT LIKE';
         }
     }
 }

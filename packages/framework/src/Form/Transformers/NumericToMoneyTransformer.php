@@ -36,8 +36,6 @@ final class NumericToMoneyTransformer implements DataTransformerInterface
         if ($value instanceof Money) {
             return $value->getAmount();
         }
-
-        throw new TransformationFailedException('Money or null must be provided.');
     }
 
     /**
@@ -67,7 +65,5 @@ final class NumericToMoneyTransformer implements DataTransformerInterface
         if (is_float($value)) {
             return Money::createFromFloat($value, $this->floatScale);
         }
-
-        throw new TransformationFailedException('A string, a number or null must be provided.');
     }
 }

@@ -227,6 +227,10 @@ final class Money implements JsonSerializable
      */
     protected static function createDecimal($value, ?int $scale = null): Decimal
     {
+        if (is_int($value) == false && is_string($value) == false) {
+            throw new UnsupportedTypeException($value, ['string', 'int']);
+        }
+
         if (is_int($value)) {
             return Decimal::fromInteger($value);
         }
@@ -238,7 +242,5 @@ final class Money implements JsonSerializable
                 throw new \Shopsys\FrameworkBundle\Component\Money\Exception\InvalidNumericArgumentException($value, $e);
             }
         }
-
-        throw new UnsupportedTypeException($value, ['string', 'int']);
     }
 }

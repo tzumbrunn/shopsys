@@ -121,7 +121,7 @@ class AdvertController extends AdminBaseController
         }
 
         if ($form->isSubmitted() && !$form->isValid()) {
-            $this->addErrorFlashTwig(t('Please check the correctness of all data filled.'));
+            $this->addErrorFlash(t('Please check the correctness of all data filled.'));
         }
 
         $this->breadcrumbOverrider->overrideLastItem(t('Editing advertising - %name%', ['%name%' => $advert->getName()]));

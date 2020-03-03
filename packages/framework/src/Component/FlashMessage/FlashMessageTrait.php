@@ -9,35 +9,35 @@ trait FlashMessageTrait
 {
     /**
      * @param string $template
-     * @param array|null $parameters
+     * @param array $parameters
      */
-    public function addSuccessFlashTwig(string $template, ?array $parameters = []): void
+    public function addSuccessFlashTwig(string $template, array $parameters = []): void
     {
         $this->addSuccessFlash($this->renderStringTwigTemplate($template, $parameters));
     }
 
     /**
      * @param string $template
-     * @param array|null $parameters
+     * @param array $parameters
      */
-    public function addErrorFlashTwig(string $template, ?array $parameters = []): void
+    public function addErrorFlashTwig(string $template, array $parameters = []): void
     {
         $this->addErrorFlash($this->renderStringTwigTemplate($template, $parameters));
     }
 
     /**
      * @param string $template
-     * @param array|null $parameters
+     * @param array $parameters
      */
-    public function addInfoFlashTwig(string $template, ?array $parameters = []): void
+    public function addInfoFlashTwig(string $template, array $parameters = []): void
     {
         $this->addInfoFlash($this->renderStringTwigTemplate($template, $parameters));
     }
 
     /**
-     * @param mixed $message
+     * @param string $message
      */
-    public function addErrorFlash($message): void
+    public function addErrorFlash(string $message): void
     {
         $this->addFlashMessage(FlashMessage::KEY_ERROR, $message);
     }
@@ -60,9 +60,9 @@ trait FlashMessageTrait
 
     /**
      * @param string $type
-     * @param string $message
+     * @param mixed $message
      */
-    protected function addFlashMessage(string $type, string $message): void
+    protected function addFlashMessage(string $type, $message): void
     {
         if (!$this->container->has('session')) {
             throw new \LogicException('You can not use the addFlash method if sessions are disabled. Enable them in "config/packages/framework.yaml".');
@@ -76,7 +76,7 @@ trait FlashMessageTrait
      * @param array $parameters
      * @return string
      */
-    protected function renderStringTwigTemplate(string $template, array $parameters): string
+    protected function renderStringTwigTemplate(string $template, array $parameters = []): string
     {
         /** @var \Twig\Environment $twigEnvironment */
         $twigEnvironment = $this->container->get('twig');

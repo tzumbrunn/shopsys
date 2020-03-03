@@ -46,5 +46,7 @@ class GenerateFriendlyUrlCommand extends Command
         $this->friendlyUrlGeneratorFacade->generateUrlsForSupportedEntities($output);
 
         $output->writeln('<fg=green>Generating complete.</fg=green>');
+
+        return 0;
     }
 }

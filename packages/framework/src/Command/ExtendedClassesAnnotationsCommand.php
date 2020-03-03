@@ -136,6 +136,8 @@ class ExtendedClassesAnnotationsCommand extends Command
             $symfonyStyle->note('You can fix the annotations using "annotations-fix" phing command.');
             return 1;
         }
+
+        return 0;
     }
 
     /**

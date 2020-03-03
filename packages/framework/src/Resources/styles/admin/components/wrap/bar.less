@@ -4,14 +4,19 @@
 
 .wrap-bar {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: flex-end;
     width: 100%;
     padding: 5px 0 @wrap-bar-margin-bottom;
 
     border-bottom: @wrap-border-style;
 
-    @media @query-lg {
-        flex-direction: row;
+    &--with-title {
+        flex-direction: column;
+
+        @media @query-lg {
+            flex-direction: row;
+        }
     }
 
     &__heading {
@@ -39,7 +44,7 @@
     }
 
     &__tooltip {
-        padding: 7px 5px;
+        padding: 14px 5px;
         float: right;
     }
 }

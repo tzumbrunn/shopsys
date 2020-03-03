@@ -16,7 +16,7 @@ class Authenticator
     /**
      * @var \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface
      */
-    protected $tokenStorageInterface;
+    protected $tokenStorage;
 
     /**
      * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
@@ -24,14 +24,14 @@ class Authenticator
     protected $eventDispatcher;
 
     /**
-     * @param \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface $tokenStorageInterface
+     * @param \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface $tokenStorage
      * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
-        TokenStorageInterface $tokenStorageInterface,
+        TokenStorageInterface $tokenStorage,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->tokenStorageInterface = $tokenStorageInterface;
+        $this->tokenStorage = $tokenStorage;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -68,7 +68,7 @@ class Authenticator
     public function loginUser(CustomerUser $customerUser, Request $request)
     {
         $token = new UsernamePasswordToken($customerUser, $customerUser->getPassword(), 'frontend', $customerUser->getRoles());
-        $this->tokenStorageInterface->setToken($token);
+        $this->tokenStorage->setToken($token);
 
         // dispatch the login event
         $event = new InteractiveLoginEvent($request, $token);

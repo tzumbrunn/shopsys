@@ -33,7 +33,7 @@ parameters:
             path: %currentWorkingDirectory%/packages/framework/src/*
         -
             message: '#^Unsafe usage of new static().#'
-            path: %currentWorkingDirectory%/packages/framework/src/Model/*
+            path: %currentWorkingDirectory%/packages/framework/*
         # shopsys/project-base - don't forget to add these rules to phpstan.neon in project-base
         -
             # We need to have undefined variable for testing purposes
